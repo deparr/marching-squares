@@ -22,13 +22,14 @@ func new_map(new_width: int, new_height: int) -> void:
 
 
 func compute_isolines() -> PackedByteArray:
-	assert(self.map.size() % 2 == 0, "isoline requires map.size() % 2")
+	var start := Time.get_ticks_msec()
 
 	var isolines := PackedByteArray()
 	var isoline_size := (self.height - 1) * (self.width - 1)
 	var err := isolines.resize(isoline_size)
 	if err != OK:
 		print("unable to create isoline array:", error_string(err))
+		return []
 
 	var i := 0
 	var iso_idx := 0
@@ -46,6 +47,7 @@ func compute_isolines() -> PackedByteArray:
 
 		i += self.width
 	
+	print("GENERATE: %f" % (float(Time.get_ticks_msec() - start) / 1000.0))
 	return isolines
 
 func smooth_map() -> void:
